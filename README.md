@@ -1,4 +1,4 @@
-# Facebook Fanpage Keyword Analyzer 👍
+# Facebook Fanpage Keyword Analyzer 👍 [UPDATE 06/15/2023]
 This script allows you to analyze the posts on a Facebook fanpage and determine the percentage of posts containing a specific keyword.
 
 Usage
