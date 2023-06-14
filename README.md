@@ -30,11 +30,11 @@ To run tests, run the following command
 ```javascript
 var posts = document.querySelectorAll('div.x1yztbdb.x1n2onr6.xh8yej3.x1ja2u2z div.x1iorvi4.x1pi30zi.x1l90r2v.x1swvt13');
 var postsCount = document.querySelectorAll('div.x1yztbdb.x1n2onr6.xh8yej3.x1ja2u2z');
-var keyword = "ภูเก็ต"; // Specify the keyword you want to search
+var keyword = "ข้าวหน้าบะเต็ง"; // Specify the keyword you want to search
 var totalPosts = postsCount.length;
 var keywordCount = 0;
 
-var x1htElements = document.querySelectorAll('div.x11i5rnm.xat24cr.x1mh8g0r.x1vvkbs.xtlvy1s.x126k92a div[role="button"]');
+var x1htElements = document.querySelectorAll('div.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x1vvkbs.x126k92a div[role="button"]');
 
 x1htElements.forEach(function(element) {
     element.click();
