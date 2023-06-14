@@ -69,7 +69,9 @@ function countKeywordOccurrences(text, keyword) {
 }
 ```
 
+## Output
 
+<img src="/output.png" alt="Alt text" title="Output">
 
 ##
 
