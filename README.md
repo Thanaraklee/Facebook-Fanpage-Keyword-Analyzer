@@ -1,4 +1,4 @@
-# Facebook Fanpage Keyword Analyzer 👍 [UPDATE 06/15/2023]
+# Facebook Fanpage Keyword Analyzer 👍 [UPDATE 06/16/2023]
 This script allows you to analyze the posts on a Facebook fanpage and determine the percentage of posts containing a specific keyword.
 
 Usage
@@ -6,11 +6,6 @@ Usage
 - Right-click and select "Inspect" to open the Developer Tools.
 - Click on the "Console" tab.
 - Copy and paste the following code into the console:
-
-## Warning This is Demo! 
-
-`Please scroll down to load all posts before analyzing.`
-
 
 ## Features
 
@@ -28,45 +23,114 @@ Usage
 To run tests, run the following command
 
 ```javascript
-var posts = document.querySelectorAll('div.x1yztbdb.x1n2onr6.xh8yej3.x1ja2u2z div.x1iorvi4.x1pi30zi.x1l90r2v.x1swvt13');
-var postsCount = document.querySelectorAll('div.x1yztbdb.x1n2onr6.xh8yej3.x1ja2u2z');
-var keyword = "ข้าวหน้าบะเต็ง"; // Specify the keyword you want to search
-var totalPosts = postsCount.length;
-var keywordCount = 0;
+// Assume the entered month is "มีนาคม" and the entered day is 15
+var enteredMonth = "มีนาคม";
+var enteredDay = 18;
 
-var x1htElements = document.querySelectorAll('div.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x1vvkbs.x126k92a div[role="button"]');
+// Function to check the date and scroll down
+function checkDateAndScroll() {
+  var scrollInterval = 1000; // Adjust the scroll interval (in milliseconds) as needed
 
-x1htElements.forEach(function(element) {
+  var scrollDown = function() {
+    window.scrollBy(0, window.innerHeight);
+    setTimeout(checkDate, scrollInterval);
+  };
+
+  var checkDate = function() {
+    var posts = document.querySelectorAll('div.x1yztbdb.x1n2onr6.xh8yej3.x1ja2u2z');
+    var matchFound = false;
+
+    for (var i = 0; i < posts.length; i++) {
+      var post = posts[i];
+      var dateElement = post.querySelector('a.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xt0b8zv.xo1l8bm span');
+
+      if (dateElement) {
+        var dateText = dateElement.textContent.trim();
+        var dateParts = dateText.split(' ');
+        var day = parseInt(dateParts[0], 10); // Convert day to number
+        var month = dateParts[1];
+
+        // console.log("Formatted Date:", day, month);
+
+        // Compare the month and day with the entered month and day
+        if (month === enteredMonth && day < enteredDay) {
+          // Exact match found, stop scrolling
+          console.log(day, month);
+          console.log("Exact match found");
+          matchFound = true;
+          break;
+        }
+      }
+    }
+
+    if (!matchFound) {
+      // Scroll down and continue checking
+      scrollDown();
+    } else {
+      // Match found, click on all posts
+      clickOnAllPosts();
+    }
+  };
+
+  // Start scrolling
+  scrollDown();
+}
+
+// Function to click on all posts
+function clickOnAllPosts() {
+  var x1htElements = document.querySelectorAll('div.x1a2a7pz div.x78zum5.x1n2onr6.xh8yej3 div.xu06os2.x1ok221b div[role="button"]');
+
+  x1htElements.forEach(function(element) {
     element.click();
-});
+  });
 
-posts.forEach(function(post) {
+  // Wait for the posts to load after clicking
+  setTimeout(performKeywordSearch, 2000);
+}
+
+// Function to perform keyword search
+function performKeywordSearch() {
+  var posts = document.querySelectorAll('div.x1yztbdb.x1n2onr6.xh8yej3.x1ja2u2z div.x1iorvi4.x1pi30zi.x1l90r2v.x1swvt13');
+  var postsCount = document.querySelectorAll('div.x1yztbdb.x1n2onr6.xh8yej3.x1ja2u2z');
+  var keyword = "แบงค์"; // Specify the keyword you want to search
+  var totalPosts = postsCount.length;
+  var keywordCount = 0;
+
+  posts.forEach(function(post) {
     var postText = post.textContent.trim();
+    var dateElement = post.closest('div.x1yztbdb.x1n2onr6.xh8yej3.x1ja2u2z').querySelector('a.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xt0b8zv.xo1l8bm span');
+    var dateText = dateElement ? dateElement.textContent.trim() : "";
+
     var count = countKeywordOccurrences(postText, keyword);
     if (count > 0) {
-        keywordCount += 1;
-        console.log("Post text:", postText);
-        console.log("Keyword count:", count);
+      keywordCount += 1;
+      console.log("Date:", dateText,"Post text:", postText);
+      console.log("Keyword count:", count);
     }
-});
+  });
 
-console.log("Total posts:", totalPosts);
-console.log("Total keyword count:", keywordCount);
+  console.log("Total posts:", totalPosts);
+  console.log("Total keyword count:", keywordCount);
 
-var keywordPercentage = (keywordCount / totalPosts) * 100;
-console.log("Keyword percentage:", keywordPercentage.toFixed(2) + "%");
+  var keywordPercentage = (keywordCount / totalPosts) * 100;
+  console.log("Keyword percentage:", keywordPercentage.toFixed(2) + "%");
 
-if (keywordPercentage > 70) {
+  if (keywordPercentage > 70) {
     console.log("The keyword appears in more than 70% of the total posts. 🎉");
-} else {
+  } else {
     console.log("The keyword does not appear in more than 70% of the total posts. 😔");
+  }
 }
 
 function countKeywordOccurrences(text, keyword) {
-    var regex = new RegExp(keyword, "gi");
-    var matches = text.match(regex);
-    return matches ? matches.length : 0;
+  var regex = new RegExp(keyword, "gi");
+  var matches = text.match(regex);
+  return matches ? matches.length : 0;
 }
+
+// Start the process
+checkDateAndScroll();
+
 ```
 
 ## Output
