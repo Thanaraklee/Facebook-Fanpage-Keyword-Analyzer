@@ -26,6 +26,7 @@ To run tests, run the following command
 // Assume the entered month is "มีนาคม" and the entered day is 15
 var enteredMonth = "มีนาคม";
 var enteredDay = 18;
+var keywords = ["แบงค์", "เงิน", "บัตร"]; // Enter your keywords here
 
 // Function to check the date and scroll down
 function checkDateAndScroll() {
@@ -92,34 +93,39 @@ function clickOnAllPosts() {
 function performKeywordSearch() {
   var posts = document.querySelectorAll('div.x1yztbdb.x1n2onr6.xh8yej3.x1ja2u2z div.x1iorvi4.x1pi30zi.x1l90r2v.x1swvt13');
   var postsCount = document.querySelectorAll('div.x1yztbdb.x1n2onr6.xh8yej3.x1ja2u2z');
-  var keyword = "แบงค์"; // Specify the keyword you want to search
   var totalPosts = postsCount.length;
-  var keywordCount = 0;
 
-  posts.forEach(function(post) {
-    var postText = post.textContent.trim();
-    var dateElement = post.closest('div.x1yztbdb.x1n2onr6.xh8yej3.x1ja2u2z').querySelector('a.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xt0b8zv.xo1l8bm span');
-    var dateText = dateElement ? dateElement.textContent.trim() : "";
+  keywords.forEach(function(keyword) {
+    var keywordCount = 0;
 
-    var count = countKeywordOccurrences(postText, keyword);
-    if (count > 0) {
-      keywordCount += 1;
-      console.log("Date:", dateText,"Post text:", postText);
-      console.log("Keyword count:", count);
+    posts.forEach(function(post) {
+      var postText = post.textContent.trim();
+      var dateElement = post.closest('div.x1yztbdb.x1n2onr6.xh8yej3.x1ja2u2z').querySelector('a.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xt0b8zv.xo1l8bm span');
+      var dateText = dateElement ? dateElement.textContent.trim() : "";
+
+      var count = countKeywordOccurrences(postText, keyword);
+      if (count > 0) {
+        keywordCount += 1;
+        console.log("Keyword:", keyword);
+        console.log("Date:", dateText, "Post text:", postText);
+        console.log("Keyword count:", count);
+      }
+    });
+
+    console.log("Total posts:", totalPosts);
+    console.log("Total keyword count for", keyword + ":", keywordCount);
+
+    var keywordPercentage = (keywordCount / totalPosts) * 100;
+    console.log("Keyword percentage for", keyword + ":", keywordPercentage.toFixed(2) + "%");
+
+    if (keywordPercentage > 70) {
+      console.log("The keyword", keyword + " appears in more than 70% of the total posts. 🎉");
+    } else {
+      console.log("The keyword", keyword + " does not appear in more than 70% of the total posts. 😔");
     }
+
+    console.log("---------------------------");
   });
-
-  console.log("Total posts:", totalPosts);
-  console.log("Total keyword count:", keywordCount);
-
-  var keywordPercentage = (keywordCount / totalPosts) * 100;
-  console.log("Keyword percentage:", keywordPercentage.toFixed(2) + "%");
-
-  if (keywordPercentage > 70) {
-    console.log("The keyword appears in more than 70% of the total posts. 🎉");
-  } else {
-    console.log("The keyword does not appear in more than 70% of the total posts. 😔");
-  }
 }
 
 function countKeywordOccurrences(text, keyword) {
